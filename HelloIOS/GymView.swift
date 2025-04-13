@@ -1,5 +1,4 @@
 import SwiftUI
-
 struct GymView: View {
     var body: some View {
         NavigationView {
@@ -13,16 +12,18 @@ struct GymView: View {
                 Text("Welcome to Gym")
                     .font(.title)
                 
-                // 这里可以添加健身相关的列表或其他内容
+                // 修改列表内容以匹配设计文档的三个主要部分
                 List {
-                    NavigationLink(destination: Text("Workout Plans")) {
-                        Label("Workout Plans", systemImage: "list.bullet")
+                    NavigationLink(destination: TrainingPlanView()) {
+                        Label("训练计划(Training Plan)", systemImage: "square.and.pencil")
                     }
-                    NavigationLink(destination: Text("Exercise Records")) {
-                        Label("Exercise Records", systemImage: "chart.bar")
+                    
+                    NavigationLink(destination: Text("训练计时 (Training Record)")) {
+                        Label("训练计时(Training Record)", systemImage: "timer")
                     }
-                    NavigationLink(destination: Text("Training Schedule")) {
-                        Label("Training Schedule", systemImage: "calendar")
+                    
+                    NavigationLink(destination: Text("训练数据 (Training Data)")) {
+                        Label("训练数据(Training Data)", systemImage: "chart.bar.fill")
                     }
                 }
             }
