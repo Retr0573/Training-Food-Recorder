@@ -3,20 +3,55 @@ import Foundation
 class TrainingPlanViewModel: ObservableObject {
     @Published var themes: [TrainingTheme] = []
     
+    // 文件路径
+    private var themesFilePath: URL {
+        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        return documentsDirectory.appendingPathComponent("trainingThemes.json")
+    }
+    
+    // 初始化时加载数据
+    init() {
+        loadThemes()
+    }
+    
+    // 加载主题数据
+    private func loadThemes() {
+        do {
+            let data = try Data(contentsOf: themesFilePath)
+            themes = try JSONDecoder().decode([TrainingTheme].self, from: data)
+        } catch {
+            print("Error loading themes: \(error)")
+            themes = []  // 如果加载失败，使用空数组
+        }
+    }
+    
+    // 保存主题数据
+    private func saveThemes() {
+        do {
+            let data = try JSONEncoder().encode(themes)
+            try data.write(to: themesFilePath)
+        } catch {
+            print("Error saving themes: \(error)")
+        }
+    }
+    
+    // 添加主题
     func addTheme(_ theme: TrainingTheme) {
         themes.append(theme)
-        // TODO: 保存到本地存储
+        saveThemes()  // 保存到文件
     }
     
+    // 删除主题
     func deleteTheme(_ theme: TrainingTheme) {
         themes.removeAll { $0.id == theme.id }
-        // TODO: 从本地存储中删除
+        saveThemes()  // 保存到文件
     }
     
+    // 更新主题
     func updateTheme(_ theme: TrainingTheme) {
         if let index = themes.firstIndex(where: { $0.id == theme.id }) {
             themes[index] = theme
-            // TODO: 更新本地存储
+            saveThemes()  // 保存到文件
         }
     }
 }
