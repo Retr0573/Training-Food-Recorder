@@ -29,7 +29,11 @@ struct TrainingItemView: View {
             // 训练组列表
             Section("训练组") {
                 ForEach(viewModel.item.sets) { set in
-                    SetRowView(set: set)
+                    NavigationLink(destination: TrainingSetView(set: set, onSave: { updatedSet in
+                        viewModel.updateSet(updatedSet)
+                    })) {
+                        SetRowView(set: set)
+                    }
                 }
                 .onMove { from, to in
                     viewModel.moveSet(from: from, to: to)
@@ -53,9 +57,15 @@ struct TrainingItemView: View {
             }
         }
         .sheet(isPresented: $showingAddSet) {
-            AddSetView(isPresented: $showingAddSet) { set in
-                viewModel.addSet(set)
-            }
+            AddSetFormView(
+                onSave: { set in
+                    viewModel.addSet(set)
+                    showingAddSet = false
+                },
+                onCancel: {
+                    showingAddSet = false
+                }
+            )
         }
         .alert("编辑说明", isPresented: $isEditingDescription) {
             TextField("说明", text: $descriptionText)
@@ -97,9 +107,10 @@ struct SetRowView: View {
     }
 }
 
-struct AddSetView: View {
-    @Binding var isPresented: Bool
+struct AddSetFormView: View {
+    @Environment(\.dismiss) private var dismiss
     let onSave: (TrainingSet) -> Void
+    let onCancel: () -> Void
     
     @State private var reps = 10
     @State private var weight = 20.0
@@ -121,19 +132,24 @@ struct AddSetView: View {
                 }
             }
             .navigationTitle("添加训练组")
-            .navigationBarItems(
-                leading: Button("取消") { isPresented = false },
-                trailing: Button("保存") {
-                    let newSet = TrainingSet(
-                        reps: reps,
-                        weight: weight,
-                        restTime: restTime,
-                        isWarmup: isWarmup
-                    )
-                    onSave(newSet)
-                    isPresented = false
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("取消") {
+                        onCancel()
+                    }
                 }
-            )
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("保存") {
+                        let newSet = TrainingSet(
+                            reps: reps,
+                            weight: weight,
+                            restTime: restTime,
+                            isWarmup: isWarmup
+                        )
+                        onSave(newSet)
+                    }
+                }
+            }
         }
     }
 }
