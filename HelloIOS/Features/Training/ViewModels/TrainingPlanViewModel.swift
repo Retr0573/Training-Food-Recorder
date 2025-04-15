@@ -3,7 +3,10 @@ import Foundation
 class TrainingPlanViewModel: ObservableObject {
     @Published var themes: [TrainingTheme] = []
     
-    // 文件路径
+    // 文件路径：trainingThemes.json
+    // 存储所有主题的完整信息
+    // 包括每个主题的 items（训练项目）
+    // 每次修改主题或项目时都会更新这个文件
     private var themesFilePath: URL {
         let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
         return documentsDirectory.appendingPathComponent("trainingThemes.json")
@@ -52,6 +55,16 @@ class TrainingPlanViewModel: ObservableObject {
         if let index = themes.firstIndex(where: { $0.id == theme.id }) {
             themes[index] = theme
             saveThemes()  // 保存到文件
+        }
+    }
+    
+    // 更新主题的项目列表
+    func updateThemeItems(_ items: [TrainingItem], for theme: TrainingTheme) {
+        if let index = themes.firstIndex(where: { $0.id == theme.id }) {
+            var updatedTheme = theme
+            updatedTheme.items = items
+            themes[index] = updatedTheme
+            saveThemes()
         }
     }
 }

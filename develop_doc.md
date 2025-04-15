@@ -51,3 +51,21 @@ MVVM 的工作流程：
 - ViewModel 调用 Model 获取或处理数据（如发起网络请求）。
 - Model 返回数据给 ViewModel → ViewModel 转换为适合 View 显示的形式（如日期格式化）。
 - ViewModel 通过 数据绑定（如 Swift 中的 @Published + ObservableObject）自动更新 View。
+
+## 2025.4.14
+### 1. Theme的数据持久化
+TrainingPlanViewModel.swift中使用FileManager
+
+## 2025.4.15
+### 1. Item的数据持久化
+创建了新的 TrainingThemeViewModel，它：
+- 提供了所有必要的操作方法（添加、删除、更新、移动项目）
+更新了 TrainingThemeView：
+- 使用新的 TrainingThemeViewModel 替代直接使用 TrainingPlanViewModel
+- 通过初始化器注入依赖
+- 实现了备注编辑功能
+- 所有操作都通过 ViewModel 进行
+
+### 2. Set的数据持久化
+创建一个 TrainingItemViewModel 来管理训练项目的训练组
+然后更新 TrainingItemView 来使用新的 ViewModel

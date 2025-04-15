@@ -1,9 +1,15 @@
 import SwiftUI
 
 struct TrainingItemView: View {
+    @StateObject private var viewModel: TrainingItemViewModel
     @State private var showingAddSet = false
     @State private var isEditingDescription = false
-    let item: TrainingItem
+    @State private var descriptionText: String
+    
+    init(item: TrainingItem, themeViewModel: TrainingThemeViewModel) {
+        _viewModel = StateObject(wrappedValue: TrainingItemViewModel(item: item, themeViewModel: themeViewModel))
+        _descriptionText = State(initialValue: item.description ?? "")
+    }
     
     var body: some View {
         List {
@@ -12,7 +18,7 @@ struct TrainingItemView: View {
                 HStack {
                     Text("说明")
                     Spacer()
-                    Text(item.description ?? "添加说明")
+                    Text(viewModel.item.description ?? "添加说明")
                         .foregroundColor(.secondary)
                 }
                 .onTapGesture {
@@ -22,18 +28,20 @@ struct TrainingItemView: View {
             
             // 训练组列表
             Section("训练组") {
-                ForEach(item.sets) { set in
+                ForEach(viewModel.item.sets) { set in
                     SetRowView(set: set)
                 }
                 .onMove { from, to in
-                    // TODO: 实现训练组重排序
+                    viewModel.moveSet(from: from, to: to)
                 }
                 .onDelete { indexSet in
-                    // TODO: 实现训练组删除
+                    for index in indexSet {
+                        viewModel.deleteSet(viewModel.item.sets[index])
+                    }
                 }
             }
         }
-        .navigationTitle(item.name)
+        .navigationTitle(viewModel.item.name)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(action: { showingAddSet = true }) {
@@ -45,7 +53,19 @@ struct TrainingItemView: View {
             }
         }
         .sheet(isPresented: $showingAddSet) {
-            AddSetView(isPresented: $showingAddSet)
+            AddSetView(isPresented: $showingAddSet) { set in
+                viewModel.addSet(set)
+            }
+        }
+        .alert("编辑说明", isPresented: $isEditingDescription) {
+            TextField("说明", text: $descriptionText)
+            Button("保存") {
+                viewModel.updateDescription(descriptionText.isEmpty ? nil : descriptionText)
+                isEditingDescription = false
+            }
+            Button("取消", role: .cancel) {
+                isEditingDescription = false
+            }
         }
     }
 }
@@ -79,6 +99,8 @@ struct SetRowView: View {
 
 struct AddSetView: View {
     @Binding var isPresented: Bool
+    let onSave: (TrainingSet) -> Void
+    
     @State private var reps = 10
     @State private var weight = 20.0
     @State private var restTime = 60
@@ -102,7 +124,13 @@ struct AddSetView: View {
             .navigationBarItems(
                 leading: Button("取消") { isPresented = false },
                 trailing: Button("保存") {
-                    // TODO: 保存训练组
+                    let newSet = TrainingSet(
+                        reps: reps,
+                        weight: weight,
+                        restTime: restTime,
+                        isWarmup: isWarmup
+                    )
+                    onSave(newSet)
                     isPresented = false
                 }
             )

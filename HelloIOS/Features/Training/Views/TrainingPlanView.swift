@@ -22,7 +22,7 @@ struct TrainingPlanView: View {
             List {
                 // 遍历所有训练主题并创建可点击的导航链接
                 ForEach(viewModel.themes) { theme in
-                    NavigationLink(destination: TrainingThemeView(theme: theme)) {
+                    NavigationLink(destination: TrainingThemeView(theme: theme, planViewModel: viewModel)) {
                         ThemeRowView(theme: theme)
                     }
                 }
