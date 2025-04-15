@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		F4A8FB8B2DAE4AED00550B0C /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F4A8FB892DAE4AED00550B0C /* Model.xcdatamodeld */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		F4A8FA1D2DAA134500550B0C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -27,6 +31,7 @@
 		F4A8FA0C2DAA134300550B0C /* HelloIOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HelloIOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4A8FA1C2DAA134500550B0C /* HelloIOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HelloIOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4A8FA262DAA134500550B0C /* HelloIOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HelloIOSUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4A8FB8A2DAE4AED00550B0C /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -75,6 +80,7 @@
 		F4A8FA032DAA134300550B0C = {
 			isa = PBXGroup;
 			children = (
+				F4A8FB892DAE4AED00550B0C /* Model.xcdatamodeld */,
 				F4A8FA0E2DAA134300550B0C /* HelloIOS */,
 				F4A8FA1F2DAA134500550B0C /* HelloIOSTests */,
 				F4A8FA292DAA134500550B0C /* HelloIOSUITests */,
@@ -236,6 +242,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F4A8FB8B2DAE4AED00550B0C /* Model.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -558,6 +565,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		F4A8FB892DAE4AED00550B0C /* Model.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				F4A8FB8A2DAE4AED00550B0C /* Model.xcdatamodel */,
+			);
+			currentVersion = F4A8FB8A2DAE4AED00550B0C /* Model.xcdatamodel */;
+			path = Model.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = F4A8FA042DAA134300550B0C /* Project object */;
 }
