@@ -69,3 +69,6 @@ TrainingPlanViewModel.swift中使用FileManager
 ### 2. Set的数据持久化
 创建一个 TrainingItemViewModel 来管理训练项目的训练组
 然后更新 TrainingItemView 来使用新的 ViewModel
+
+### 3. 持久化方案修改
+FileManager -〉 CoreData
