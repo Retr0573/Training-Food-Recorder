@@ -1,5 +1,8 @@
 import SwiftUI
+
 struct GymView: View {
+    @Environment(\.managedObjectContext) private var context
+
     var body: some View {
         NavigationView {
             VStack {
@@ -12,22 +15,21 @@ struct GymView: View {
                 Text("Welcome to Gym")
                     .font(.title)
                 
-                // 修改列表内容以匹配设计文档的三个主要部分
                 List {
                     NavigationLink(destination: TrainingPlanView()) {
-                        Label("训练计划(Training Plan)", systemImage: "square.and.pencil")
+                        Label("Training Plan", systemImage: "square.and.pencil")
                     }
                     
-                    NavigationLink(destination: Text("训练计时 (Training Record)")) {
-                        Label("训练计时(Training Record)", systemImage: "timer")
+                    NavigationLink(destination: RecordPlanView(context: context)) {
+                        Label("Training Record", systemImage: "timer")
                     }
                     
                     NavigationLink(destination: Text("训练数据 (Training Data)")) {
-                        Label("训练数据(Training Data)", systemImage: "chart.bar.fill")
+                        Label("Training Data", systemImage: "chart.bar.fill")
                     }
                 }
             }
             .navigationTitle("Gym")
         }
     }
-} 
+}

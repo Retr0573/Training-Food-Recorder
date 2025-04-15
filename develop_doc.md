@@ -72,3 +72,6 @@ TrainingPlanViewModel.swift中使用FileManager
 
 ### 3. 持久化方案修改
 FileManager -〉 CoreData
+
+## 2025.4.16
+### 1. 初始化record view
