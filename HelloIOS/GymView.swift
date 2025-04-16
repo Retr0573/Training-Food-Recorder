@@ -2,6 +2,7 @@ import SwiftUI
 
 struct GymView: View {
     @Environment(\.managedObjectContext) private var context
+    @StateObject private var timerManager = TrainingTimerManager() // 创建计时管理器实例
 
     var body: some View {
         NavigationStack {
@@ -20,7 +21,8 @@ struct GymView: View {
                         Label("Training Plan", systemImage: "square.and.pencil")
                     }
                     
-                    NavigationLink(destination: RecordPlanView(context: context)) {
+                    NavigationLink(destination: RecordPlanView(context: context)
+                        .environmentObject(timerManager)) { // 注入计时管理器
                         Label("Training Record", systemImage: "timer")
                     }
                     

@@ -3,21 +3,30 @@ import CoreData
 
 struct RecordItemView: View {
     @StateObject private var viewModel: RecordItemViewModel
+    @EnvironmentObject var timerManager: TrainingTimerManager
 
     init(context: NSManagedObjectContext, item: T_Item) {
         _viewModel = StateObject(wrappedValue: RecordItemViewModel(context: context, item: item))
     }
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: 16) {
-                ForEach(viewModel.sets, id: \.id) { set in
-                    SetCardView(set: set)
+        ZStack {
+            ScrollView {
+                VStack(spacing: 16) {
+                    ForEach(viewModel.sets, id: \.id) { set in
+                        SetCardView(set: set)
+                    }
                 }
+                .padding()
             }
-            .padding()
+            .navigationTitle(viewModel.currentItem.name ?? "未命名项目")
+
+            // 固定在底部的按钮
+            VStack {
+                Spacer()
+                TrainingControlButton()
+            }
         }
-        .navigationTitle(viewModel.currentItem.name ?? "未命名项目")
     }
 }
 
