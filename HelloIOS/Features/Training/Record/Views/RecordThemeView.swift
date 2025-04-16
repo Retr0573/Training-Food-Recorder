@@ -32,8 +32,12 @@ struct RecordThemeView: View {
                 .padding()
             }
             .navigationTitle(viewModel.currentTheme.name ?? "未命名主题")
-            .confirmationDialog("是否开始训练 \(viewModel.currentTheme.name ?? "该主题")？", isPresented: $showConfirmationDialog, titleVisibility: .visible) {
-                Button("开始训练") {
+            .confirmationDialog(
+                "是否开始训练 \(selectedItem?.name ?? "该项目")？", // 修改为显示选中的 item 名称
+                isPresented: $showConfirmationDialog,
+                titleVisibility: .visible
+            ) {
+                Button("开始项目训练") {
                     navigateToRecordItem = true
                 }
                 Button("取消", role: .cancel) {}
@@ -47,7 +51,7 @@ struct RecordThemeView: View {
             // 固定在底部的按钮
             VStack {
                 Spacer()
-                TrainingControlButton()
+                TrainingRecordButton()
             }
         }
         // ScrollView {
