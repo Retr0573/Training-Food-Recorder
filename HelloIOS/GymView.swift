@@ -4,7 +4,7 @@ struct GymView: View {
     @Environment(\.managedObjectContext) private var context
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 Image(systemName: "dumbbell.fill")
                     .imageScale(.large)
