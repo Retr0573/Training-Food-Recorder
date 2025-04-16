@@ -54,10 +54,10 @@ struct GymView: View {
                     .imageScale(.large)
                     .foregroundStyle(.tint)
                     .font(.system(size: 40))
-                    .padding(.top, 40)
-                Text("")
-                    .font(.title)
-                    .padding(.bottom, 20)
+                    .padding()
+//                Text("")
+//                    .font(.title)
+//                    .padding(.bottom, 20)
 
                 List {
                     buttonRow(label: "训练计划", systemImage: "square.and.pencil") {
@@ -97,16 +97,15 @@ struct GymView: View {
         Button(action: action) {
             HStack(spacing: 12) {
                 Image(systemName: systemImage)
-                    .font(.title2)
+                    .font(.title3)
                     .foregroundStyle(.tint)
-                    .frame(width: 24) // 添加固定宽度
-                    .offset(x: -2) // 微调位置
+                    .frame(width: 24, height: 24) // 添加固定宽高
                 
                 Text(label)
-                    .font(.title2)
+                    .font(.callout)
                     .foregroundColor(.black)
             }
-            .padding(.vertical, 8)
+            .padding(.vertical, 5)
             .contentShape(Rectangle())
         }
     }

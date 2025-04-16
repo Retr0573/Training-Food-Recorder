@@ -75,3 +75,4 @@ FileManager -〉 CoreData
 
 ## 2025.4.16
 ### 1. 初始化record view
+### 2. 加入计时功能

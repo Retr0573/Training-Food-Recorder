@@ -15,7 +15,7 @@ class TrainingSetViewModel: ObservableObject {
         self.context = context
         self.reps = Int(set?.reps ?? 10)
         self.weight = set?.weight ?? 20.0
-        self.restTime = Int(set?.restTime ?? 60)
+        self.restTime = Int(set?.restTime ?? 120)
         self.isWarmup = set?.isWarmup ?? false
     }
 
