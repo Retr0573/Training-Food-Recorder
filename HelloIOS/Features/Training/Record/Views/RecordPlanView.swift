@@ -13,7 +13,9 @@ struct RecordPlanView: View {
         ScrollView {
             VStack(spacing: 16) {
                 ForEach(viewModel.themes, id: \.id) { theme in
-                    CardView(theme: theme)
+                    NavigationLink(destination: RecordThemeView(context: viewModel.managedObjectContext, theme: theme)) {
+                        CardView(theme: theme)
+                    }
                 }
             }
             .padding()

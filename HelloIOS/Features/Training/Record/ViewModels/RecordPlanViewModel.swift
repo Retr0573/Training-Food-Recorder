@@ -12,7 +12,9 @@ class RecordPlanViewModel: ObservableObject {
         self.context = context
         fetchThemes()
     }
-
+    var managedObjectContext: NSManagedObjectContext {
+        return context
+    }
     func fetchThemes() {
         let request: NSFetchRequest<T_Theme> = T_Theme.fetchRequest()
         request.sortDescriptors = [NSSortDescriptor(keyPath: \T_Theme.name, ascending: true)]
