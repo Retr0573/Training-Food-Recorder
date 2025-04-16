@@ -1,6 +1,6 @@
 import Foundation
 import CoreData
-
+// import UserNotifications
 class RecordItemViewModel: ObservableObject {
     @Published var sets: [SetState] = []
     private let context: NSManagedObjectContext
@@ -11,6 +11,7 @@ class RecordItemViewModel: ObservableObject {
         self.context = context
         self.item = item
         fetchSets()
+        // requestNotificationPermission()
     }
      var currentItem: T_Item {
         return item
@@ -44,6 +45,17 @@ class RecordItemViewModel: ObservableObject {
         let order = Int(setState.set.order)
         return order == (lastTrainedOrder ?? -1) + 1 && !sets.contains { $0.isTraining }
     }
+    // private func requestNotificationPermission() {
+    //     UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { granted, error in
+    //         if let error = error {
+    //             print("通知权限请求失败: \(error)")
+    //         } else if granted {
+    //             print("通知权限已授予")
+    //         } else {
+    //             print("通知权限被拒绝")
+    //         }
+    //     }
+    // }
 }
 
 class SetState: ObservableObject, Identifiable {

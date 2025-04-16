@@ -1,6 +1,6 @@
 import SwiftUI
 import CoreData
-
+import UserNotifications
 struct RecordItemView: View {
     @StateObject private var viewModel: RecordItemViewModel
     @EnvironmentObject var timerManager: TrainingTimerManager
@@ -8,6 +8,9 @@ struct RecordItemView: View {
     @State private var showExitConfirmation = false
     @State private var showTrainingEndedAlert = false
     @State private var trainingDuration: String = ""
+    @State private var showRestEndedAlert = false // 控制休息结束后的弹窗显示
+    @State private var nextSetName: String = ""   // 保存下一组的名称
+
 
     init(context: NSManagedObjectContext, item: T_Item) {
         _viewModel = StateObject(wrappedValue: RecordItemViewModel(context: context, item: item))
@@ -33,6 +36,8 @@ struct RecordItemView: View {
             .navigationBarBackButtonHidden(true)
             .navigationBarItems(leading: backButton)
             .onAppear {
+                requestNotificationPermission() // 请求通知权限
+                UNUserNotificationCenter.current().delegate = NotificationDelegate.shared
                 if !timerManager.isProjectTraining {
                     timerManager.startProjectTraining()
                 }
@@ -97,7 +102,16 @@ struct RecordItemView: View {
         } message: {
             Text("训练用时：\(trainingDuration)")
         }
+        .alert("休息结束", isPresented: $showRestEndedAlert) {
+            Button("去开始下一组") {
+                // 用户点击后可以触发下一组训练逻辑
+                showRestEndedAlert = false  
+            }
+        } message: {
+            Text(nextSetName)
+        }
     }
+    
 
     // 自定义返回按钮
     private var backButton: some View {
@@ -142,13 +156,57 @@ struct RecordItemView: View {
 
             // 开始休息倒计时
             setState.isResting = true
+            // 实现回调
+            setState.onRestingEnded = { 
+                // 回调逻辑：休息结束时触发
+                if let nextSet = viewModel.sets.first(where: { !$0.isTrained }) {
+                    nextSetName = "下一组：重量 \(nextSet.set.weight) kg，次数 \(nextSet.set.reps)"
+                } else {
+                    nextSetName = "所有训练已完成！"
+                }
+                // showRestEndedAlert = true
+                // 发送本地通知
+                sendRestEndedNotification()
+            }
             Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
                 if setState.remainingRestTime > 0 {
                     setState.remainingRestTime -= 1
                 } else {
                     setState.isResting = false
+                    setState.onRestingEnded?() // 触发休息结束回调
                     timer.invalidate()
                 }
+            }
+        }
+    }
+    private func requestNotificationPermission() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+            if let error = error {
+                print("通知授权失败: \(error.localizedDescription)")
+            } else if granted {
+                print("通知授权成功")
+            } else {
+                print("用户拒绝通知授权")
+            }
+        }
+    }
+    private func sendRestEndedNotification() {
+        print("发送休息结束通知")
+        let content = UNMutableNotificationContent()
+        content.title = "休息结束"
+        content.body = nextSetName
+        content.sound = .default
+        print("通知内容: \(content.title), \(content.body)")
+        // 设置触发时间为立即
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+
+        // 创建通知请求
+        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+
+        // 添加通知请求到通知中心
+        UNUserNotificationCenter.current().add(request) { error in
+            if let error = error {
+                print("发送通知失败: \(error.localizedDescription)")
             }
         }
     }
