@@ -37,6 +37,13 @@ struct TrainingItemView: View {
                             }
                         }
                     }
+                    .contextMenu {
+                        Button(action: {
+                            viewModel.duplicateSet(set)
+                        }) {
+                            Label("复制此组", systemImage: "doc.on.doc")
+                        }
+                    }
                 }
                 .onDelete(perform: viewModel.deleteSet)
                 .onMove(perform: viewModel.moveSet) // 启用拖动排序

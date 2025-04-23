@@ -39,6 +39,7 @@ class TrainingItemViewModel: ObservableObject {
         saveContext()
         refreshSetsArray()
     }
+    
     // 用于处理训练组的顺序调整，并更新 order 参数。
     func moveSet(from source: IndexSet, to destination: Int) {
         var reorderedSets = setsArray
@@ -54,9 +55,67 @@ class TrainingItemViewModel: ObservableObject {
         refreshSetsArray()
     }
 
+    func duplicateSet(_ set: T_Set) {
+        let newSet = T_Set(context: context)
+        newSet.id = UUID()  // 确保有唯一ID
+        newSet.item = item
+        newSet.reps = set.reps
+        newSet.weight = set.weight
+        newSet.restTime = set.restTime
+        newSet.isWarmup = set.isWarmup
+        
+        // 设置新组的顺序为当前最大顺序+1
+        let maxOrder = setsArray.map { $0.order }.max() ?? -1
+        newSet.order = maxOrder + 1
+        
+        // 建立双向关系
+        item.addToSets(newSet)
+        // 保存上下文
+        saveContext()
+        
+        // 刷新数组以更新UI
+        refreshSetsArray()
+    }
+
+    // /// 清理单向依赖的 Set
+    // func cleanupOrphanedSets() {
+    //     // 1. 通过 FetchRequest 获取与当前 item 相关的所有 Set
+    //     let fetchRequest: NSFetchRequest<T_Set> = T_Set.fetchRequest()
+    //     fetchRequest.predicate = NSPredicate(format: "item == %@", item)
+        
+    //     do {
+    //         let allSets = try context.fetch(fetchRequest)
+            
+    //         // 2. 获取当前通过关系能够获取到的 Set
+    //         let relatedSets = item.getSets
+            
+    //         // 3. 找出只有单向依赖的 Set（在 allSets 中但不在 relatedSets 中）
+    //         let orphanedSets = allSets.filter { set in
+    //             !relatedSets.contains { $0.id == set.id }
+    //         }
+            
+    //         print("找到 \(orphanedSets.count) 个单向依赖的训练组")
+            
+    //         // 4. 删除这些单向依赖的 Set
+    //         for set in orphanedSets {
+    //             context.delete(set)
+    //             print("删除了单向依赖的训练组: \(set.weight)kg x \(set.reps)次")
+    //         }
+            
+    //         // 5. 保存上下文
+    //         if !orphanedSets.isEmpty {
+    //             saveContext()
+    //             print("已删除所有单向依赖的训练组")
+    //         }
+    //     } catch {
+    //         print("清理单向依赖的训练组时出错: \(error)")
+    //     }
+    // }
+
     private func saveContext() {
         do {
             try context.save()
+            objectWillChange.send()
         } catch {
             print("Error saving context: \(error)")
         }
@@ -66,90 +125,3 @@ class TrainingItemViewModel: ObservableObject {
         setsArray = item.getSets.sorted(by: { $0.order < $1.order })
     }
 }
-// import Foundation
-
-// class TrainingItemViewModel: ObservableObject {
-//     @Published var item: TrainingItem
-//     private let themeViewModel: TrainingThemeViewModel
-    
-//     // 文件路径
-//     private var itemFilePath: URL {
-//         let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-//         return documentsDirectory.appendingPathComponent("item_\(item.id).json")
-//     }
-    
-//     init(item: TrainingItem, themeViewModel: TrainingThemeViewModel) {
-//         self.item = item
-//         self.themeViewModel = themeViewModel
-//         loadItem()
-//     }
-    
-//     // 加载项目数据
-//     private func loadItem() {
-//         do {
-//             let data = try Data(contentsOf: itemFilePath)
-//             let loadedItem = try JSONDecoder().decode(TrainingItem.self, from: data)
-//             item = loadedItem
-//         } catch {
-//             print("Error loading item: \(error)")
-//             // 如果加载失败，使用传入的项目
-//         }
-//     }
-    
-//     // 保存项目数据
-//     private func saveItem() {
-//         do {
-//             let data = try JSONEncoder().encode(item)
-//             try data.write(to: itemFilePath)
-//         } catch {
-//             print("Error saving item: \(error)")
-//         }
-//     }
-    
-//     // 添加训练组
-//     func addSet(_ set: TrainingSet) {
-//         var updatedItem = item
-//         updatedItem.sets.append(set)
-//         item = updatedItem
-//         saveItem()  // 保存到本地文件
-//         themeViewModel.updateItem(updatedItem)  // 更新到主题数据
-//     }
-    
-//     // 删除训练组
-//     func deleteSet(_ set: TrainingSet) {
-//         var updatedItem = item
-//         updatedItem.sets.removeAll { $0.id == set.id }
-//         item = updatedItem
-//         saveItem()  // 保存到本地文件
-//         themeViewModel.updateItem(updatedItem)  // 更新到主题数据
-//     }
-    
-//     // 更新训练组
-//     func updateSet(_ set: TrainingSet) {
-//         var updatedItem = item
-//         if let index = updatedItem.sets.firstIndex(where: { $0.id == set.id }) {
-//             updatedItem.sets[index] = set
-//             item = updatedItem
-//             saveItem()  // 保存到本地文件
-//             themeViewModel.updateItem(updatedItem)  // 更新到主题数据
-//         }
-//     }
-    
-//     // 移动训练组
-//     func moveSet(from source: IndexSet, to destination: Int) {
-//         var updatedItem = item
-//         updatedItem.sets.move(fromOffsets: source, toOffset: destination)
-//         item = updatedItem
-//         saveItem()  // 保存到本地文件
-//         themeViewModel.updateItem(updatedItem)  // 更新到主题数据
-//     }
-    
-//     // 更新项目描述
-//     func updateDescription(_ description: String?) {
-//         var updatedItem = item
-//         updatedItem.description = description
-//         item = updatedItem
-//         saveItem()  // 保存到本地文件
-//         themeViewModel.updateItem(updatedItem)  // 更新到主题数据
-//     }
-// } 
