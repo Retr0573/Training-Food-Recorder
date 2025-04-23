@@ -46,9 +46,22 @@
 		F4CCEDCC2DAE6A2100EA9FC1 /* T_Set+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "T_Set+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		F4F4A2B82DB8CD4000BB5141 /* Exceptions for "HelloIOS" folder in "HelloIOS" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = F4A8FA0B2DAA134300550B0C /* HelloIOS */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		F4A8FA0E2DAA134300550B0C /* HelloIOS */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				F4F4A2B82DB8CD4000BB5141 /* Exceptions for "HelloIOS" folder in "HelloIOS" target */,
+			);
 			path = HelloIOS;
 			sourceTree = "<group>";
 		};
@@ -430,6 +443,7 @@
 				DEVELOPMENT_TEAM = 66RN99ZF8A;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = HelloIOS/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -460,6 +474,7 @@
 				DEVELOPMENT_TEAM = 66RN99ZF8A;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = HelloIOS/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
