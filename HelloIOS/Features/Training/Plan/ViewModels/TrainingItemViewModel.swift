@@ -15,6 +15,11 @@ class TrainingItemViewModel: ObservableObject {
     func addSet(_ set: T_Set) {
         set.id = UUID()
         set.item = item
+        
+        // 设置新组的 order 值为当前最大 order + 1
+        let maxOrder = setsArray.map { $0.order }.max() ?? -1
+        set.order = maxOrder + 1
+        
         item.addToSets(set)
         saveContext()
         refreshSetsArray()
