@@ -211,6 +211,7 @@ struct RecordItemView: View {
         if let startTime = trainingStartTime, let set = currentTrainingSet, set.isTraining {
             let elapsedSeconds = Int(Date().timeIntervalSince(startTime))
             set.elapsedTime = elapsedSeconds
+            print("当前训练组：\(set.set.weight) kg，\(set.set.reps) 次")
             print("更新训练时间：\(elapsedSeconds)秒")
         }
 
@@ -283,7 +284,19 @@ struct RecordItemView: View {
 
             // 通知其他组检查休息状态
             for otherSet in viewModel.sets where otherSet.id != setState.id {
-                otherSet.checkRestingStatus(isAnySetTraining: true)
+
+                // 如果有正在休息的组被中断，需要更新休息计时器状态
+                if otherSet === currentRestingSet{
+                    otherSet.endResting() // 结束其他组的休息状态
+                    print("结束休息组：\(otherSet.set.weight) kg，\(otherSet.set.reps) 次")
+                    // 清理休息相关状态
+                    currentRestingSet = nil
+                    restingStartTime = nil
+                    
+                    // 停止休息计时器
+                    restingTimer?.cancel()
+                    restingTimer = nil
+                }
             }
         } else {
             // 结束训练逻辑

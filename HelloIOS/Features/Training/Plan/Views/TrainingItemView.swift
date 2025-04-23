@@ -25,7 +25,8 @@ struct TrainingItemView: View {
                         editingSet = set
                     }) {
                         HStack {
-                            Text("\(set.reps) 次 × \(String(format: "%.1f", set.weight))kg")
+                            Text("第\(set.order+1)组| \(set.reps) 次 × \(String(format: "%.1f", set.weight))kg, 休息 \(set.restTime)秒")
+                                .font(.headline)
                             Spacer()
                             if set.isWarmup {
                                 Text("热身组")
