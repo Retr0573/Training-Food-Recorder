@@ -4,6 +4,7 @@ struct FoodView: View {
     @State private var navigateToMealPlan = false
     @State private var navigateToMealEntry = false
     @State private var navigateToNutritionData = false
+    @State private var navigateToMealIdentify = false
 
     var body: some View {
         NavigationStack {
@@ -18,7 +19,9 @@ struct FoodView: View {
                     buttonRow(label: "制定饮食计划", systemImage: "text.book.closed") {
                         navigateToMealPlan = true
                     }
-
+                    buttonRow(label: "食物内容识别", systemImage: "text.book.closed") {
+                        navigateToMealIdentify = true
+                    }
                     buttonRow(label: "录入每餐信息", systemImage: "square.and.pencil") {
                         navigateToMealEntry = true
                     }
@@ -34,6 +37,8 @@ struct FoodView: View {
                 NavigationLink("", destination: MealEntryView(), isActive: $navigateToMealEntry)
                     .hidden()
                 NavigationLink("", destination: NutritionDataView(), isActive: $navigateToNutritionData)
+                    .hidden()
+                NavigationLink("", destination: MealIdentifyView(), isActive: $navigateToMealIdentify)
                     .hidden()
             }
             .navigationTitle("Food")
