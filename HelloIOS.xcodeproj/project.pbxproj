@@ -47,7 +47,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		F4F4A2B82DB8CD4000BB5141 /* Exceptions for "HelloIOS" folder in "HelloIOS" target */ = {
+		F4629FA22E375A18002D21C5 /* Exceptions for "HelloIOS" folder in "HelloIOS" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -60,7 +60,7 @@
 		F4A8FA0E2DAA134300550B0C /* HelloIOS */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				F4F4A2B82DB8CD4000BB5141 /* Exceptions for "HelloIOS" folder in "HelloIOS" target */,
+				F4629FA22E375A18002D21C5 /* Exceptions for "HelloIOS" folder in "HelloIOS" target */,
 			);
 			path = HelloIOS;
 			sourceTree = "<group>";
