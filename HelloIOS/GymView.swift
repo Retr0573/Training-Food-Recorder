@@ -1,41 +1,3 @@
-// import SwiftUI
-
-// struct GymView: View {
-//     @Environment(\.managedObjectContext) private var context
-//     @StateObject private var timerManager = TrainingTimerManager() // 创建计时管理器实例
-
-//     var body: some View {
-//         NavigationStack {
-//             VStack {
-//                 Image(systemName: "dumbbell.fill")
-//                     .imageScale(.large)
-//                     .foregroundStyle(.tint)
-//                     .font(.system(size: 40))
-//                     .padding()
-                
-//                 Text("Welcome to Gym")
-//                     .font(.title)
-                
-//                 List {
-//                     NavigationLink(destination: TrainingPlanView()) {
-//                         Label("Training Plan", systemImage: "square.and.pencil")
-//                     }
-                    
-//                     NavigationLink(destination: RecordPlanView(context: context)
-//                         .environmentObject(timerManager)) { // 注入计时管理器
-//                         Label("Training Record", systemImage: "timer")
-//                     }
-                    
-//                     NavigationLink(destination: Text("训练数据 (Training Data)")) {
-//                         Label("Training Data", systemImage: "chart.bar.fill")
-//                     }
-//                 }
-//             }
-//             .navigationTitle("Gym")
-//         }
-//     }
-// }
-
 import SwiftUI
 
 struct GymView: View {
@@ -50,14 +12,7 @@ struct GymView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                Image(systemName: "dumbbell.fill")
-                    .imageScale(.large)
-                    .foregroundStyle(.tint)
-                    .font(.system(size: 40))
-                    .padding()
-//                Text("")
-//                    .font(.title)
-//                    .padding(.bottom, 20)
+                HeaderIcon(systemName: "dumbbell.fill") // 使用通用组件
 
                 List {
                     buttonRow(label: "训练计划", systemImage: "square.and.pencil") {
@@ -110,3 +65,18 @@ struct GymView: View {
         }
     }
 }
+
+// 通用的 HeaderIcon 组件
+struct HeaderIcon: View {
+    let systemName: String
+
+    var body: some View {
+        Image(systemName: systemName)
+            .imageScale(.large)
+            .foregroundStyle(.tint)
+            .font(.system(size: 40))
+            .frame(width: 60, height: 60) // 设置固定宽高
+            .padding()
+    }
+}
+

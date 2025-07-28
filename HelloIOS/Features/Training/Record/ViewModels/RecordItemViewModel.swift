@@ -78,10 +78,14 @@ class SetState: ObservableObject, Identifiable {
         self.set = set
         self.remainingRestTime = Int(set.restTime) // 初始化为组间休息时间
     }
-    // 检查是否需要结束休息状态
-    func checkRestingStatus(isAnySetTraining: Bool) {
-        if isAnySetTraining || remainingRestTime <= 0 {
-            isResting = false
-        }
+    // // 检查是否需要结束休息状态
+    // func checkRestingStatus(isAnySetTraining: Bool) {
+    //     isResting = false
+    //     // if isAnySetTraining || remainingRestTime <= 0 {
+    //     //     isResting = false
+    //     // }
+    // }
+    func endResting() {
+        isResting = false
     }
 }
